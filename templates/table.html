@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% load core_tags %}
+
+{% block content %}
+
+	{% if type == 1 %}		
+		<h1 class="page-header text-center">Galaxy Table<a href="{% url 'download' 'galaxies' %}"><i class="fa fa-download fa-fw"></i></a></h1>		
+		{% if lim < 100 %}
+		<div style="float:left"><a href="{% url 'view' lim|url_string:'galaxies' %}"><i class="fa fa-arrow-left fa-fw"></i></a></div>
+		{% elif lim > 100 %}
+		<div style="float:left"><a href="{% url 'view' lim|url_string_before:'galaxies' %}"><i class="fa fa-arrow-left fa-fw"></i></a></div>
+		<div style="float:right"><a href="{% url 'view' lim|url_string_after:'galaxies' %}"><i class="fa fa-arrow-right fa-fw"></i></a></div>
+		{% else %}
+		<div style="float:right"><a href="{% url 'view' lim|url_string_after:'galaxies' %}"><i class="fa fa-arrow-right fa-fw"></i></a></div>
+		{% endif %}
+		<div class="table-responsinve">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Right Ascension</th>
+						<th>Declination</th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for galaxy in objects %}
+					<tr>
+						<th><a href="{% url 'display_galaxy' galaxy.obj_id %}">{{galaxy.obj_id}}</a></th>
+						<th>{{galaxy.ra}}</th>
+						<th>{{galaxy.dec}}</th>
+					</tr>					
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>			
+	{% elif type == 0 %}				
+		<h1 class="page-header text-center">Pair Table<a href="{% url 'download' 'pairs' %}"><i class="fa fa-download fa-fw"></i></a></h1>		
+		{% if lim < 100 %}
+		<div style="float:left"><a href="{% url 'view' lim|url_string:'pairs' %}"><i class="fa fa-arrow-left fa-fw"></i></a></div>
+		{% elif lim > 100 %}
+		<div style="float:left"><a href="{% url 'view' lim|url_string_before:'pairs' %}"><i class="fa fa-arrow-left fa-fw"></i></a></div>
+		<div style="float:right"><a href="{% url 'view' lim|url_string_after:'pairs' %}"><i class="fa fa-arrow-right fa-fw"></i></a></div>
+		{% else %}
+		<div style="float:right"><a href="{% url 'view' lim|url_string_after:'pairs' %}"><i class="fa fa-arrow-right fa-fw"></i></a></div>
+		{% endif %}
+		<div class="table-responsinve">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>OBJ01</th>
+						<th>OBJ02</th>
+						<th>Angular Separation</th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for pair in objects %}
+					<tr>
+						<th><a href="{% url 'display_pair' pair.id %}">{{pair.id}}</th>
+						<th><a href="{% url 'display_galaxy' pair.obj_one.obj_id %}">{{pair.obj_one}}</a></th>
+						<th><a href="{% url 'display_galaxy' pair.obj_two.obj_id %}">{{pair.obj_two}}</a></th>
+						<th>{{pair.distance}}</th>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	{% else %}
+		<h1 class="page-header text-center">Empty Database</h1>
+		<p>Database is empty.</p>
+	{% endif %}
+	
+{% endblock %}

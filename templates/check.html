@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+	{% if pairs == -1 %}
+		<h1 class="page-header text-center">Empty Database</h1>
+		<p>Database is empty.</p>
+	{% elif pairs %}		
+		<h1 class="page-header text-center">New Pairs Identified</h1>
+		<p><a href="{% url 'view' 'pairs' %}">{{pairs}} pairs</a> were found by the tool.</p>	
+	{% else %}
+		<h1 class="page-header text-center">No Pair Identified</h1>
+		<p>The tool could not identify new pairs.</p>
+	{% endif %}
+	
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% load core_tags %}
+
+{% block extra-header %}
+
+<style>	
+	section {        
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, 0%) }
+</style>
+
+{% endblock %}
+
+{% block content %}
+	{% if galaxy %}
+		<h1 class="page-header text-center"> Galaxy {{galaxy.obj_id}} </h1>
+		<section class="col-lg-6">
+			<table class="table">
+					<tr>
+						<th>ra:</th>
+						<td>{{galaxy.ra}}</td>
+					</tr>
+					<tr>
+						<th>dec:</th>
+						<td>{{galaxy.dec}}</td>
+					</tr>
+			</table>
+			
+			<br />	
+			
+			<img src="http://skyservice.pha.jhu.edu/DR10/ImgCutout/getjpeg.aspx?ra={{galaxy.ra}}&dec={{galaxy.dec}}&scale=4&width=448&height=448&opt=&query=" height="448" width="448" />
+		</section>
+	{% else %}
+		<h1 class="page-header text-center"> Pair {{pair.id}} </h1>
+		<section class="col-lg-6">
+			<table class="table">
+					<tr>
+						<th>Object 01:</th>
+						<td><a href="{% url 'display_galaxy' pair.obj_one.obj_id %}">{{pair.obj_one}}</a></td>
+					</tr>
+					<tr>
+						<th>Object 02:</th>
+						<td><a href="{% url 'display_galaxy' pair.obj_two.obj_id %}">{{pair.obj_two}}</a></td>
+					</tr>
+			</table>
+			
+			<br />						
+			
+			<img src="http://skyservice.pha.jhu.edu/DR10/ImgCutout/getjpeg.aspx?{{pair|coordinates}}&scale=0.25&width=448&height=448&opt=&query=" height="448" width="448" />
+		</section>
+	{% endif %}
+
+{% endblock %}

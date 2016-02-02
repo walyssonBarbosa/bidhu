@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+	{% if not galaxies %}		
+		<h1 class="page-header text-center">Import Galaxies</h1>
+		<div>
+			<abbr title="Click here to change the import mode"><input type="button" name="source" id="source" value="CSV File" /></abbr>
+			<form action="{% url 'import_data' %}" method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="form-group">
+					<div id="mode" style="display:none">{{form.mode}}</div>
+				</div>
+				<div class="form-group">
+					<div id="csv" style="display:block">{{form.file}}</div>
+					<div id="sdss" style="display:none">{{form.sql}}</div>
+				</div>
+				<div class="form-group">
+					<div class="radio">
+						{% for radio in form.options %}
+							{{radio}}
+						{% endfor %}		
+					</div>					
+				</div>
+				<input type="submit" value="Send Data" />
+			</form>
+		</div>
+	{% elif form == "imponly" %}				
+		<h1 class="page-header text-center">Galaxies Successfully Imported</h1>
+		<p><a href="{% url 'view' 'galaxies' %}">{{galaxies}} galaxies</a> were added to the database.</p>
+	{% elif form == "impchec" %}				
+		<h1 class="page-header text-center">Galaxies Imported & Pairs Checked</h1>
+		<p><a href="{% url 'view' 'galaxies' %}">{{galaxies}} galaxies</a> were added to the database. 
+		From these galaxies, <a href="{% url 'view' 'pairs' %}">{{pairs}} pairs</a> were identified.</p>
+	{% else %}
+		<h1 class="page-header text-center">Error</h1>
+		<p>Something went wrong, try again.</p>
+	{% endif %}
+	
+{% endblock %}
+
+{% block extra-footer %}
+		
+	<script>
+		$("#source").click(function() {
+			if($(this).val() == "CSV File"){
+				$("#csv").toggle();
+				$("#sdss").toggle();
+				$("#id_mode").prop("checked", true);
+				$(this).val("SDSS SQL Form");
+			} else {
+				$("#csv").toggle();
+				$("#sdss").toggle();
+				$("#id_mode").prop("checked", false);
+				$(this).val("CSV File");
+			}
+			
+		});
+	</script>
+	
+{% endblock %}

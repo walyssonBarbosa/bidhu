@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+	{% if  message == 'neutral'%}
+	<h1 class="page-header"> Contact </h1>
+	<div class="text-center">
+		<form role="form" action="" method="post">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<button type="submit">Send Email</button>
+		</form>
+	</div>
+	{% elif message == 'success' %}
+	<h1 class="page-header"> Contact </h1>
+	<div class="text-center">
+		Your message was successfully sent. The team will answer you soon!
+	</div>
+	{% else %}
+	<h1 class="page-header"> Contact </h1>
+	<div class="text-center">
+		Something went wrong while sending the message!
+	</div>
+	{% endif %}
+
+{% endblock %}
